@@ -1,0 +1,25 @@
+# Ignore all .txt files except requirements.txt
+*.txt
+!requirements.txt
+
+# Ignore temporary files from editors like VSCode
+*~            # Backup files
+
+# Ignore specific Word document
+*report.docx
+
+# Ignore specific directories and files
+/Documents/
+output.wav
+*.log
+wavs/
+wavs_processed/
+
+# Ignore virtual environment
+.venv/
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore Python bytecode files
+__pycache__/
