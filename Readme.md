@@ -40,6 +40,7 @@ These can be installed via:
 pip install -r requirements.txt
 pytest unitTest.py
 
-To run the unit test:
-pytest unitTest.py
+To run the unit test, use the following command:
 
+```bash
+pytest unitTest.py
