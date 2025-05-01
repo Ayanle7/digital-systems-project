@@ -11,10 +11,8 @@ for line in lines:
         identifier, sentence = line.split(':', 1)
         sentence = sentence.strip()
 
-        # Remove outer quotes if present
         sentence = sentence.strip('"')
 
-        # If sentence ends with a period, preserve it
         if sentence.endswith('.'):
             main_part = sentence[:-1]
             main_part = re.sub(r'[,:;]|--|—|-', '', main_part)
@@ -26,7 +24,6 @@ for line in lines:
     else:
         cleaned_lines.append(line)
 
-# Write the result to a new file
 with open(output_path, 'w') as out_file:
     out_file.writelines(cleaned_lines)
 

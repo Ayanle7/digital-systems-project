@@ -2,7 +2,7 @@ import os
 import librosa
 import soundfile as sf
 import numpy as np
-from scipy.io import wavfile
+
 
 def remove_all_silence(audio, sr, top_db=20, frame_length=2048, hop_length=512):
  
@@ -32,16 +32,16 @@ for filename in os.listdir(input_dir):
         
         audio, sr = librosa.load(input_path, sr=None)
         
-        # Remove ALL silence (not just leading/trailing)
+
         processed_audio = remove_all_silence(
             audio, 
             sr,
-            top_db=25,  # More aggressive = less silence kept
-            frame_length=1024,  # Better for short pauses
+            top_db=25, 
+            frame_length=1024, 
             hop_length=256
         )
         
-        # Verify duration changed
+    
         orig_dur = len(audio)/sr
         new_dur = len(processed_audio)/sr
         print(f"{filename}: {orig_dur:.2f}s → {new_dur:.2f}s")

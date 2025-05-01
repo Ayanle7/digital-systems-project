@@ -23,3 +23,6 @@ wavs_processed/
 
 # Ignore Python bytecode files
 __pycache__/
+
+# Ignore .DS_Store 
+.DS_Store

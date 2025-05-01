@@ -28,7 +28,6 @@ def test_empty_text_raises_error():
     with pytest.raises(ValueError, match="Input text cannot be empty."):
         generate_waveform_and_spectrogram("   ", processor, model, vocoder, speaker_embedding)
 
-
 def test_waveform_range():
     text = "Testing waveform range."
     waveform, _ = generate_waveform_and_spectrogram(text, processor, model, vocoder, speaker_embedding)
@@ -37,12 +36,11 @@ def test_waveform_range():
     assert np.all(np.isfinite(waveform)), "Waveform contains non-finite values."
 
 
-def test_unicode_and_special_chars():
-    text = "Hello 😊! こんにちは! ¿Cómo estás?"
-    waveform, spectrogram = generate_waveform_and_spectrogram(text, processor, model, vocoder, speaker_embedding)
+def test_audio_length():
+    text = "This is a test sentence."
+    waveform, _ = generate_waveform_and_spectrogram(text, processor, model, vocoder, speaker_embedding)
 
-    assert waveform.shape[0] > 0
-    assert spectrogram.shape[1] > 0
+    assert waveform.shape[0] > 0, "Waveform has no length."
 
 
 def test_empty_text():
@@ -57,14 +55,12 @@ def test_empty_text():
     except Exception as e:
         print(f"test_empty_text: Failed with error: {e}")
 
-
-
 def test_special_characters():
     text = "Wait... what?! Really?! — No way!!!"
     speaker_embedding = torch.rand(1, 512)
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
     model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4")
-    inputs = processor(text=[text], return_tensors="pt")  # fix here
+    inputs = processor(text=[text], return_tensors="pt")  
     speech = model.generate_speech(inputs["input_ids"], speaker_embedding)
     assert speech.ndim in [1, 2]
 
@@ -91,10 +87,20 @@ def test_unicode_input():
         print(f"test_unicode_input failed: {e}")
 
 
-
-
 def test_invalid_speaker_embedding_shape():
     bad_embedding = torch.randn(1, 5)  
 
     with pytest.raises(Exception):  
         generate_waveform_and_spectrogram("Valid text", processor, model, vocoder, bad_embedding)
+
+def test_invalid_model_or_processor():
+
+    invalid_model_path = "nonexistent/model"
+
+    with pytest.raises(OSError):
+        SpeechT5ForTextToSpeech.from_pretrained(invalid_model_path)
+
+    invalid_processor_path = "nonexistent/processor"
+
+    with pytest.raises(OSError):
+        SpeechT5Processor.from_pretrained(invalid_processor_path)

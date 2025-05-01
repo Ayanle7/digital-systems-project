@@ -27,14 +27,19 @@ streamlit run voiceApp.py
 
 The project requires the following Python libraries:
 
-	•	streamlit
-	•	torch
-	•	transformers
-	•	numpy
-	•	matplotlib
-	•	soundfile
-	•	pytest
+* streamlit
+* torch
+* transformers
+* numpy
+* matplotlib
+* soundfile
+* pytest
+
 These can be installed via:
 
 pip install -r requirements.txt
+pytest unitTest.py
+
+To run the unit test:
+pytest unitTest.py
 
