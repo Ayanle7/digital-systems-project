@@ -36,9 +36,9 @@ The project requires the following Python libraries:
 * pytest
 
 These can be installed via:
-
+```bash
 pip install -r requirements.txt
-pytest unitTest.py
+```
 
 To run the unit test, use the following command:
 

@@ -10,10 +10,8 @@
 
 # Ignore specific directories and files
 /Documents/
-output.wav
+
 *.log
-wavs/
-wavs_processed/
 
 # Ignore virtual environment
 .venv/
@@ -24,5 +22,5 @@ wavs_processed/
 # Ignore Python bytecode files
 __pycache__/
 
-# Ignore .DS_Store 
+
 .DS_Store
