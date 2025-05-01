@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 from transformers import set_seed, SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan
 import soundfile as sf
 
-# Set the seed for reproducibility
 seed_value = 555
 set_seed(seed_value)
 torch.manual_seed(seed_value)
@@ -14,7 +13,7 @@ torch.cuda.manual_seed_all(seed_value)
 np.random.seed(seed_value)
 random.seed(seed_value)
 
-# Load the models and processor once
+# Load the models and processor 
 processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
 model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4")
 vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
