@@ -35,11 +35,6 @@ The project requires the following Python libraries:
 * soundfile
 * pytest
 
-These can be installed via:
-```bash
-pip install -r requirements.txt
-```
-
 To run the unit test, use the following command:
 
 ```bash
