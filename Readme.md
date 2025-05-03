@@ -21,7 +21,9 @@ source .venv/bin/activate  # For macOS/Linux
 
 2. To start the app, run:
 
+```bash
 streamlit run streamlit_tts_app.py
+```
 
 # Requirements file
 
@@ -39,3 +41,11 @@ To run the unit test, use the following command:
 
 ```bash
 pytest unitTest.py
+```
+
+**Audio Dataset URL:** 
+
+The dataset used for fine-tuning the SpeechT5 model is available at the link below, in case it is not fully visible or accessible on GitHub.
+
+🔗 https://drive.google.com/drive/folders/1uqsULUtOUCPpr3ELXg1aHncMSR6UkPCJ?usp=drive_link
+
