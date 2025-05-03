@@ -13,15 +13,17 @@ torch.cuda.manual_seed_all(seed_value)
 np.random.seed(seed_value)
 random.seed(seed_value)
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # Load the models and processor 
 processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
-model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4")
-vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
+model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4").to(device)
+vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan").to(device)
 
 # Load speaker embedding
 speaker_embedding_path = './speaker_embedding.npy'
 speaker_embeddings = np.load(speaker_embedding_path)
-speaker_embeddings = torch.tensor(speaker_embeddings).unsqueeze(0)
+speaker_embeddings = torch.tensor(speaker_embeddings).unsqueeze(0).to(device)
 
 
 def generate_waveform_and_spectrogram(text, processor, model, vocoder, speaker_embeddings):
@@ -29,6 +31,7 @@ def generate_waveform_and_spectrogram(text, processor, model, vocoder, speaker_e
         raise ValueError("Input text cannot be empty.")
 
     inputs = processor(text=text, return_tensors="pt")
+    inputs = {k: v.to(device) for k, v in inputs.items()}
     spectrogram = model.generate_speech(inputs["input_ids"], speaker_embeddings)
 
     with torch.no_grad():

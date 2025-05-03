@@ -2,14 +2,14 @@ import pytest
 import torch
 import numpy as np
 from transformers import SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan
-from voiceApp import generate_waveform_and_spectrogram  
+from streamlit_tts_app import generate_waveform_and_spectrogram  
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
-model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4")
-vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
-speaker_embedding = torch.tensor(np.load("speaker_embedding.npy")).unsqueeze(0)
-
+model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4").to(device)
+vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan").to(device)
+speaker_embedding = torch.tensor(np.load("speaker_embedding.npy")).unsqueeze(0).to(device)
 
 def test_valid_output_shapes():
     text = "Hello, world!"
@@ -45,9 +45,9 @@ def test_audio_length():
 
 def test_empty_text():
     text = ""
-    speaker_embedding = torch.rand(1, 512)
+    speaker_embedding = torch.rand(1, 512).to(device)
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
-    model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4")
+    model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4").to(device)
     inputs = processor(text=text, return_tensors="pt")
     try:
         speech = model.generate_speech(inputs["input_ids"], speaker_embedding)
@@ -57,18 +57,18 @@ def test_empty_text():
 
 def test_special_characters():
     text = "Wait... what?! Really?! — No way!!!"
-    speaker_embedding = torch.rand(1, 512)
+    speaker_embedding = torch.rand(1, 512).to(device)
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
-    model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4")
+    model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4").to(device)
     inputs = processor(text=[text], return_tensors="pt")  
     speech = model.generate_speech(inputs["input_ids"], speaker_embedding)
     assert speech.ndim in [1, 2]
 
 def test_numeric_input():
     text = "The price is 19.99 dollars and delivery is in 2 days."
-    speaker_embedding = torch.rand(1, 512)
+    speaker_embedding = torch.rand(1, 512).to(device)
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
-    model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4")
+    model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4").to(device)
     inputs = processor(text=text, return_tensors="pt")
     speech = model.generate_speech(inputs["input_ids"], speaker_embedding)
     assert speech.ndim in [1, 2]
@@ -76,9 +76,9 @@ def test_numeric_input():
 
 def test_unicode_input():
     text = "Hello 😊 How are you?"
-    speaker_embedding = torch.rand(1, 512)
+    speaker_embedding = torch.rand(1, 512).to(device)
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
-    model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4")
+    model = SpeechT5ForTextToSpeech.from_pretrained("Ayanle7/fdr_model4").to(device)
     inputs = processor(text=text, return_tensors="pt")
     try:
         speech = model.generate_speech(inputs["input_ids"], speaker_embedding)

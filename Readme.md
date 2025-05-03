@@ -21,7 +21,7 @@ source .venv/bin/activate  # For macOS/Linux
 
 2. To start the app, run:
 
-streamlit run voiceApp.py
+streamlit run streamlit_tts_app.py
 
 # Requirements file
 
